@@ -45,6 +45,48 @@
         "color": "#DDAA99"
     },
     {
+        "id": "742da52832652643",
+        "type": "group",
+        "z": "01b9b3c76ac3fd00",
+        "name": "Insert data to database",
+        "style": {
+            "label": true,
+            "stroke": "#3f93cf",
+            "color": "#ff0000",
+            "fill": "#d1d1d1"
+        },
+        "nodes": [
+            "0563d9a44551f13c",
+            "7580f4542a5000fc",
+            "7772c83d9a6bb0bb"
+        ],
+        "x": 494,
+        "y": 359,
+        "w": 512,
+        "h": 82
+    },
+    {
+        "id": "9bd12c47e88eb604",
+        "type": "group",
+        "z": "01b9b3c76ac3fd00",
+        "name": "Get Data from API",
+        "style": {
+            "stroke": "#addb7b",
+            "fill": "#7fb7df",
+            "label": true,
+            "color": "#001f60"
+        },
+        "nodes": [
+            "372f5974f93c3fb7",
+            "16f9a7b64b529564",
+            "69e0c366668e7631"
+        ],
+        "x": 534,
+        "y": 219,
+        "w": 632,
+        "h": 82
+    },
+    {
         "id": "d7cbfe99b10f3f7f",
         "type": "junction",
         "z": "c2ac8926d8a0d889",
@@ -62,6 +104,30 @@
         "y": 60,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "10d55642fa1a5b78",
+        "type": "junction",
+        "z": "01b9b3c76ac3fd00",
+        "x": 420,
+        "y": 380,
+        "wires": [
+            [
+                "0563d9a44551f13c"
+            ]
+        ]
+    },
+    {
+        "id": "c3fb69b9212aa03e",
+        "type": "junction",
+        "z": "01b9b3c76ac3fd00",
+        "x": 1400,
+        "y": 260,
+        "wires": [
+            [
+                "10d55642fa1a5b78"
+            ]
         ]
     },
     {
@@ -179,7 +245,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 360,
+        "x": 240,
         "y": 260,
         "wires": [
             [
@@ -207,7 +273,7 @@
         "checkall": "false",
         "repair": true,
         "outputs": 2,
-        "x": 550,
+        "x": 410,
         "y": 260,
         "wires": [
             [],
@@ -224,6 +290,7 @@
         "id": "372f5974f93c3fb7",
         "type": "function",
         "z": "01b9b3c76ac3fd00",
+        "g": "9bd12c47e88eb604",
         "name": "RequestBody",
         "func": "var kvartal = msg.kv;\nvar regBody = {\n    \"table\": \"folk1a\",\n    \"format\": \"CSV\",\n    \"variables\": [\n        {\n            \"code\": \"OMRÅDE\",\n            \"values\": [\n                \"730\"\n            ]\n        },\n        {\n            \"code\": \"KØN\",\n            \"values\": [\n                \"1\",\n                \"2\"\n            ]\n        },\n        {\n            \"code\": \"ALDER\",\n            \"values\": [\n                \"20\",\n                \"21\",\n                \"22\",\n                \"23\",\n                \"24\",\n                \"25\",\n                \"26\",\n                \"27\",\n                \"28\",\n                \"29\",\n                \"30\",\n                \"31\",\n                \"32\",\n                \"33\",\n                \"34\",\n                \"35\",\n                \"36\",\n                \"37\",\n                \"38\",\n                \"39\",\n                \"40\",\n                \"41\",\n                \"42\",\n                \"43\",\n                \"44\",\n                \"45\",\n                \"46\",\n                \"47\",\n                \"48\",\n                \"49\",\n                \"50\",\n                \"51\",\n                \"52\",\n                \"53\",\n                \"54\",\n                \"55\",\n                \"56\",\n                \"57\",\n                \"58\",\n                \"59\",\n                \"60\",\n                \"61\",\n                \"62\",\n                \"63\",\n                \"64\",\n                \"65\",\n                \"66\",\n                \"67\",\n                \"68\",\n                \"69\",\n                \"70\",\n                \"71\",\n                \"72\",\n                \"73\",\n                \"74\",\n                \"75\",\n                \"76\",\n                \"77\",\n                \"78\",\n                \"79\",\n                \"80\",\n                \"81\",\n                \"82\",\n                \"83\",\n                \"84\",\n                \"85\",\n                \"86\",\n                \"87\",\n                \"88\",\n                \"89\",\n                \"90\"\n            ]\n        },\n        {\n            \"code\": \"CIVILSTAND\",\n            \"values\": [\n                \"U\",\n                \"G\",\n                \"E\",\n                \"F\"\n            ]\n        },\n        {\n            \"code\": \"Tid\",\n            \"values\": [\n                `${kvartal}`\n            ]\n        }\n    ]\n};\nreturn {payload : regBody};",
         "outputs": 1,
@@ -231,7 +298,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 740,
+        "x": 640,
         "y": 260,
         "wires": [
             [
@@ -260,6 +327,7 @@
         "id": "0563d9a44551f13c",
         "type": "function",
         "z": "01b9b3c76ac3fd00",
+        "g": "742da52832652643",
         "name": "INSERT",
         "func": "var data = msg.payload;\nvar area = \"\";\nvar gender = \"\";\nvar age = \"\";\nvar civilstand = \"\";\nvar time = \"\";\nvar numberOfPeople = 0;\nvar topic = \"\";\nfor (let i = 0; i < data.length; i++) {\n    area = data[i][\"OMRÅDE\"];\n    gender = data[i][\"KØN\"];\n    age = data[i][\"ALDER\"].split(\" \")[0];\n    civilstand = data[i][\"CIVILSTAND\"];\n    time = data[i][\"TID\"];\n    numberOfPeople = data[i][\"INDHOLD\"];\n    topic += \"INSERT INTO `test`.`kage` (`område`, `køn`, `alder`, `civilstand`, `tid`, `indhold`) VALUES ('\";\n    topic += area + \"', '\" + gender + \"', '\" + age + \"', '\" + civilstand + \"', '\" + time + \"', '\" + numberOfPeople + \"');\";\n}\nmsg.topic = topic\nreturn msg;",
         "outputs": 1,
@@ -267,8 +335,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 200,
-        "y": 460,
+        "x": 580,
+        "y": 400,
         "wires": [
             [
                 "7580f4542a5000fc"
@@ -279,10 +347,11 @@
         "id": "7580f4542a5000fc",
         "type": "mysql",
         "z": "01b9b3c76ac3fd00",
+        "g": "742da52832652643",
         "mydb": "2236dfd1.c909e",
         "name": "Insert data",
-        "x": 470,
-        "y": 460,
+        "x": 750,
+        "y": 400,
         "wires": [
             [
                 "7772c83d9a6bb0bb"
@@ -293,6 +362,7 @@
         "id": "7772c83d9a6bb0bb",
         "type": "debug",
         "z": "01b9b3c76ac3fd00",
+        "g": "742da52832652643",
         "name": "log",
         "active": false,
         "tosidebar": true,
@@ -302,8 +372,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 650,
-        "y": 460,
+        "x": 910,
+        "y": 400,
         "wires": []
     },
     {
@@ -317,7 +387,7 @@
         ],
         "uncaught": false,
         "x": 100,
-        "y": 700,
+        "y": 480,
         "wires": [
             [
                 "09b826736e02fa93"
@@ -338,15 +408,16 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 360,
-        "y": 700,
+        "y": 480,
         "wires": []
     },
     {
         "id": "16f9a7b64b529564",
         "type": "subflow:c2ac8926d8a0d889",
         "z": "01b9b3c76ac3fd00",
+        "g": "9bd12c47e88eb604",
         "name": "",
-        "x": 1000,
+        "x": 900,
         "y": 260,
         "wires": [
             [
@@ -358,6 +429,7 @@
         "id": "69e0c366668e7631",
         "type": "switch",
         "z": "01b9b3c76ac3fd00",
+        "g": "9bd12c47e88eb604",
         "name": "HTTP Err",
         "property": "statusCode",
         "propertyType": "msg",
@@ -374,11 +446,11 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1180,
+        "x": 1080,
         "y": 260,
         "wires": [
             [
-                "0563d9a44551f13c"
+                "c3fb69b9212aa03e"
             ],
             [
                 "d29477cb6b0a1905",
@@ -394,11 +466,11 @@
         "links": [
             "d29477cb6b0a1905"
         ],
-        "x": 215,
+        "x": 465,
         "y": 320,
         "wires": [
             [
-                "242b9e964e848119"
+                "372f5974f93c3fb7"
             ]
         ]
     },
@@ -411,8 +483,8 @@
         "links": [
             "63e07d350b8af2cb"
         ],
-        "x": 1285,
-        "y": 300,
+        "x": 1355,
+        "y": 340,
         "wires": []
     },
     {
