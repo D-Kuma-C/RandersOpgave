@@ -8,20 +8,85 @@
         "env": []
     },
     {
-        "id": "8f87d5eb15c2a163",
-        "type": "tab",
-        "label": "Idea",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "14a6853c88df1d6d",
         "type": "tab",
         "label": "Flow 2",
         "disabled": false,
         "info": "",
         "env": []
+    },
+    {
+        "id": "c2ac8926d8a0d889",
+        "type": "subflow",
+        "name": "HTTP Request",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 60,
+                "y": 120,
+                "wires": [
+                    {
+                        "id": "bae1eb5ef0b92783"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1020,
+                "y": 120,
+                "wires": [
+                    {
+                        "id": "08952d9c2328ac56",
+                        "port": 0
+                    },
+                    {
+                        "id": "a0f1d7ebf4807157",
+                        "port": 0
+                    },
+                    {
+                        "id": "d7cbfe99b10f3f7f",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "d26f0eb409c8c52c",
+        "type": "junction",
+        "z": "c2ac8926d8a0d889",
+        "x": 580,
+        "y": 60,
+        "wires": [
+            [
+                "08952d9c2328ac56"
+            ]
+        ]
+    },
+    {
+        "id": "08952d9c2328ac56",
+        "type": "junction",
+        "z": "c2ac8926d8a0d889",
+        "x": 920,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d7cbfe99b10f3f7f",
+        "type": "junction",
+        "z": "c2ac8926d8a0d889",
+        "x": 920,
+        "y": 180,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "2236dfd1.c909e",
@@ -32,6 +97,106 @@
         "db": "test",
         "tz": "",
         "charset": ""
+    },
+    {
+        "id": "4f12a9d931da1b40",
+        "type": "csv",
+        "z": "c2ac8926d8a0d889",
+        "name": "",
+        "sep": ";",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 630,
+        "y": 180,
+        "wires": [
+            [
+                "d7cbfe99b10f3f7f"
+            ]
+        ]
+    },
+    {
+        "id": "bae1eb5ef0b92783",
+        "type": "http request",
+        "z": "c2ac8926d8a0d889",
+        "name": "StatiskBankAPI",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.statbank.dk/v1/data",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 260,
+        "y": 120,
+        "wires": [
+            [
+                "72fd0bf3f9c722d0"
+            ]
+        ]
+    },
+    {
+        "id": "72fd0bf3f9c722d0",
+        "type": "switch",
+        "z": "c2ac8926d8a0d889",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "istype",
+                "v": "object",
+                "vt": "object"
+            },
+            {
+                "t": "istype",
+                "v": "json",
+                "vt": "json"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 430,
+        "y": 120,
+        "wires": [
+            [
+                "d26f0eb409c8c52c"
+            ],
+            [
+                "a0f1d7ebf4807157"
+            ],
+            [
+                "4f12a9d931da1b40"
+            ]
+        ]
+    },
+    {
+        "id": "a0f1d7ebf4807157",
+        "type": "json",
+        "z": "c2ac8926d8a0d889",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 630,
+        "y": 120,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "6c5cf798431959f6",
@@ -120,8 +285,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 700,
-        "y": 60,
+        "x": 740,
+        "y": 180,
         "wires": []
     },
     {
@@ -156,7 +321,7 @@
         "y": 260,
         "wires": [
             [
-                "ad92b32df95e5c1f"
+                "16f9a7b64b529564"
             ]
         ]
     },
@@ -173,57 +338,9 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1010,
-        "y": 100,
+        "x": 1250,
+        "y": 180,
         "wires": []
-    },
-    {
-        "id": "b6523aba7880363d",
-        "type": "csv",
-        "z": "01b9b3c76ac3fd00",
-        "name": "",
-        "sep": ";",
-        "hdrin": true,
-        "hdrout": "none",
-        "multi": "mult",
-        "ret": "\\n",
-        "temp": "",
-        "skip": "0",
-        "strings": true,
-        "include_empty_strings": "",
-        "include_null_values": "",
-        "x": 1130,
-        "y": 260,
-        "wires": [
-            [
-                "b21c63fa55eeed73",
-                "0563d9a44551f13c"
-            ]
-        ]
-    },
-    {
-        "id": "ad92b32df95e5c1f",
-        "type": "http request",
-        "z": "01b9b3c76ac3fd00",
-        "name": "StatiskBankAPI",
-        "method": "POST",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "https://api.statbank.dk/v1/data",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 960,
-        "y": 260,
-        "wires": [
-            [
-                "b6523aba7880363d"
-            ]
-        ]
     },
     {
         "id": "0563d9a44551f13c",
@@ -361,380 +478,16 @@
         "wires": []
     },
     {
-        "id": "a8d5512922669b48",
-        "type": "inject",
-        "z": "8f87d5eb15c2a163",
+        "id": "16f9a7b64b529564",
+        "type": "subflow:c2ac8926d8a0d889",
+        "z": "01b9b3c76ac3fd00",
         "name": "",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 210,
-        "y": 180,
+        "x": 1000,
+        "y": 260,
         "wires": [
             [
-                "45f77dea5319d24d"
-            ]
-        ]
-    },
-    {
-        "id": "45f77dea5319d24d",
-        "type": "function",
-        "z": "8f87d5eb15c2a163",
-        "name": "function 5",
-        "func": "var d = new Date();\nvar year = d.getFullYear();\nvar month = d.getMonth() + 1;\nvar day = d.getDate();\nvar msg = new String(year +\".\" + month+ \".\" + day);\nreturn {payload : msg};",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 360,
-        "y": 180,
-        "wires": [
-            [
-                "96f08e9c24bc10ff"
-            ]
-        ]
-    },
-    {
-        "id": "9744f4b219e82941",
-        "type": "debug",
-        "z": "8f87d5eb15c2a163",
-        "name": "K4",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 570,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "96f08e9c24bc10ff",
-        "type": "switch",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "2023.4.7",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "2023.7.7",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "2023.8.24",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "2023.1.7",
-                "vt": "str"
-            }
-        ],
-        "checkall": "false",
-        "repair": true,
-        "outputs": 4,
-        "x": 490,
-        "y": 180,
-        "wires": [
-            [
-                "4b61b71242facfa7"
-            ],
-            [
-                "78a6ce5ff013e262"
-            ],
-            [
-                "9aa961398da0bed2",
-                "f18de3425a485a0f"
-            ],
-            [
-                "9744f4b219e82941",
-                "975e9d0339634e57"
-            ]
-        ],
-        "outputLabels": [
-            "K1",
-            "K2",
-            "K3",
-            "K4"
-        ]
-    },
-    {
-        "id": "9aa961398da0bed2",
-        "type": "debug",
-        "z": "8f87d5eb15c2a163",
-        "name": "K3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 570,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "4b61b71242facfa7",
-        "type": "http request",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": false,
-        "url": "",
-        "persist": false,
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 670,
-        "y": 120,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "78a6ce5ff013e262",
-        "type": "http request",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": false,
-        "url": "",
-        "persist": false,
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 670,
-        "y": 180,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "f18de3425a485a0f",
-        "type": "http request",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": false,
-        "url": "",
-        "persist": false,
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 670,
-        "y": 240,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "975e9d0339634e57",
-        "type": "http request",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": false,
-        "url": "",
-        "persist": false,
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 670,
-        "y": 300,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "028ec9c184c90962",
-        "type": "inject",
-        "z": "8f87d5eb15c2a163",
-        "name": "CREATE",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 140,
-        "y": 640,
-        "wires": [
-            [
-                "b0b3248b26dbcfb4"
-            ]
-        ]
-    },
-    {
-        "id": "a007c0055f23fb01",
-        "type": "debug",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "x": 670,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "b0b3248b26dbcfb4",
-        "type": "function",
-        "z": "8f87d5eb15c2a163",
-        "name": "TABLE",
-        "func": "//topic = \"CREATE TABLE `access` ( \";\n//topic = topic + \"`no` INT NULL AUTO_INCREMENT,\";\n//topic = topic + \"`date` TIMESTAMP NOT NULL,\";\n//topic = topic + \"`room` INT NULL,\";\n//topic = topic + \"`id` INT NULL,\";\n//topic = topic + \"INDEX `no` (`no`)) COLLATE='utf8mb3_danish_ci';\";\nvar topic = \"CREATE TABLE `Kage` (`no` INT NOT NULL AUTO_INCREMENT,`Name` VARCHAR(50) NOT NULL,`Age` INT NOT NULL,INDEX`no`(`no`))COLLATE = 'utf8mb3_danish_ci';\";\nmsg.topic = topic;\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 310,
-        "y": 640,
-        "wires": [
-            [
-                "b7a35c12e04f3826"
-            ]
-        ]
-    },
-    {
-        "id": "b7a35c12e04f3826",
-        "type": "mysql",
-        "z": "8f87d5eb15c2a163",
-        "d": true,
-        "mydb": "2236dfd1.c909e",
-        "name": "",
-        "x": 490,
-        "y": 640,
-        "wires": [
-            [
-                "a007c0055f23fb01"
-            ]
-        ]
-    },
-    {
-        "id": "a98e5b208327d235",
-        "type": "inject",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 110,
-        "y": 720,
-        "wires": [
-            [
-                "8575ba8139aaf19f"
-            ]
-        ]
-    },
-    {
-        "id": "b8dd7edc57b924f1",
-        "type": "http request",
-        "z": "8f87d5eb15c2a163",
-        "name": "Aalborg weather",
-        "method": "POST",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "https://api.statbank.dk/v1/data",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 500,
-        "y": 720,
-        "wires": [
-            [
-                "25df221dae8424ef"
-            ]
-        ]
-    },
-    {
-        "id": "e498ad2be78bf32f",
-        "type": "debug",
-        "z": "8f87d5eb15c2a163",
-        "name": "debug 9",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 780,
-        "y": 720,
-        "wires": []
-    },
-    {
-        "id": "8575ba8139aaf19f",
-        "type": "function",
-        "z": "8f87d5eb15c2a163",
-        "name": "function 7",
-        "func": "var year = \"2023K2\";\nvar reg = {\n    \"table\": \"folk1a\",\n    \"format\": \"CSV\",\n    \"variables\": [\n        {\n            \"code\": \"OMRÅDE\",\n            \"values\": [\n                \"730\"\n            ]\n        },\n        {\n            \"code\": \"KØN\",\n            \"values\": [\n                \"1\",\n                \"2\"\n            ]\n        },\n        {\n            \"code\": \"ALDER\",\n            \"values\": [\n                \"20\",\n                \"90\",\n                \"21\",\n                \"22\",\n                \"23\",\n                \"24\",\n                \"25\",\n                \"26\",\n                \"27\",\n                \"28\",\n                \"29\",\n                \"30\",\n                \"31\",\n                \"32\",\n                \"33\",\n                \"34\",\n                \"35\",\n                \"36\",\n                \"37\",\n                \"38\",\n                \"39\",\n                \"40\",\n                \"41\",\n                \"42\",\n                \"43\",\n                \"44\",\n                \"45\",\n                \"46\",\n                \"47\",\n                \"48\",\n                \"49\",\n                \"50\",\n                \"51\",\n                \"52\",\n                \"53\",\n                \"54\",\n                \"55\",\n                \"56\",\n                \"57\",\n                \"58\",\n                \"59\",\n                \"60\",\n                \"61\",\n                \"62\",\n                \"63\",\n                \"64\",\n                \"65\",\n                \"66\",\n                \"67\",\n                \"68\",\n                \"69\",\n                \"70\",\n                \"71\",\n                \"72\",\n                \"73\",\n                \"74\",\n                \"75\",\n                \"76\",\n                \"77\",\n                \"78\",\n                \"79\",\n                \"80\",\n                \"81\",\n                \"82\",\n                \"83\",\n                \"84\",\n                \"85\",\n                \"86\",\n                \"87\",\n                \"88\",\n                \"89\"\n            ]\n        },\n        {\n            \"code\": \"CIVILSTAND\",\n            \"values\": [\n                \"U\",\n                \"G\",\n                \"E\",\n                \"F\"\n            ]\n        },\n        {\n            \"code\": \"Tid\",\n            \"values\": [\n                `${year}`\n            ]\n        }\n    ]\n};\nreturn {payload : reg};",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 280,
-        "y": 720,
-        "wires": [
-            [
-                "b8dd7edc57b924f1"
-            ]
-        ]
-    },
-    {
-        "id": "25df221dae8424ef",
-        "type": "csv",
-        "z": "8f87d5eb15c2a163",
-        "name": "",
-        "sep": ";",
-        "hdrin": true,
-        "hdrout": "none",
-        "multi": "mult",
-        "ret": "\\n",
-        "temp": "",
-        "skip": "0",
-        "strings": true,
-        "include_empty_strings": "",
-        "include_null_values": "",
-        "x": 650,
-        "y": 720,
-        "wires": [
-            [
-                "e498ad2be78bf32f"
+                "b21c63fa55eeed73",
+                "0563d9a44551f13c"
             ]
         ]
     },
