@@ -40,15 +40,15 @@
         "name": "",
         "props": [],
         "repeat": "",
-        "crontab": "*/30 6 * * *",
+        "crontab": "00 07 * * *",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 170,
-        "y": 260,
+        "x": 90,
+        "y": 140,
         "wires": [
             [
-                "242b9e964e848119"
+                "3bc47683cc4d087e"
             ]
         ]
     },
@@ -57,13 +57,13 @@
         "type": "function",
         "z": "01b9b3c76ac3fd00",
         "name": "GetDate",
-        "func": "var d = new Date();\nvar year = d.getFullYear();\nvar month = d.getMonth() + 1;\nvar day = d.getDate();\nif (month == 1 && day == 8) {\n    msg.kv = year + \"K1\";\n    return msg;\n} else if (month == 4 && day == 8) {\n    msg.kv = year + \"K2\";\n    return msg;\n} else if (month == 8 && day == 26) /*Husk at ændre denne tilbage til month 7 og day 8 */{\n    msg.kv = year + \"K3\";\n    return msg;\n} else if (month == 10 && day == 8) {\n    msg.kv = year + \"K4\";\n    return msg;\n} else {\n    msg.notToday = \"Not today\";\n    return msg;\n}\n",
+        "func": "var d = new Date();\nvar k = flow.get(\"completed\", k);\nvar year = d.getFullYear();\nvar month = d.getMonth() + 1;\nvar day = d.getDate();\nif (month == 1 && day == 8 && k == 0) {\n    msg.kv = year + \"K1\";\n    return msg;\n} else if (month == 4 && day == 8 && k == 0) {\n    msg.kv = year + \"K2\";\n    return msg;\n} else if (month == 8 && day == 26 && k == 0) /*Husk at ændre denne tilbage til month 7 og day 8 */{\n    msg.kv = year + \"K3\";\n    return msg;\n} else if (month == 10 && day == 8 && k == 0) {\n    msg.kv = year + \"K4\";\n    return msg;\n} else {\n    msg.notToday = \"Not today\";\n    return msg;\n}\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 320,
+        "x": 360,
         "y": 260,
         "wires": [
             [
@@ -91,7 +91,7 @@
         "checkall": "false",
         "repair": true,
         "outputs": 2,
-        "x": 490,
+        "x": 530,
         "y": 260,
         "wires": [
             [
@@ -111,7 +111,7 @@
         "id": "25cefcab79d3a769",
         "type": "debug",
         "z": "01b9b3c76ac3fd00",
-        "name": "Ikke idag",
+        "name": "Not Today",
         "active": false,
         "tosidebar": true,
         "console": false,
@@ -120,15 +120,15 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 480,
-        "y": 140,
+        "x": 700,
+        "y": 60,
         "wires": []
     },
     {
         "id": "475e39af2ab8d53a",
         "type": "debug",
         "z": "01b9b3c76ac3fd00",
-        "name": "Idag",
+        "name": "Today",
         "active": false,
         "tosidebar": true,
         "console": false,
@@ -145,7 +145,7 @@
         "id": "372f5974f93c3fb7",
         "type": "function",
         "z": "01b9b3c76ac3fd00",
-        "name": "ReguestBody",
+        "name": "RequestBody",
         "func": "var kvartal = msg.kv;\nvar regBody = {\n    \"table\": \"folk1a\",\n    \"format\": \"CSV\",\n    \"variables\": [\n        {\n            \"code\": \"OMRÅDE\",\n            \"values\": [\n                \"730\"\n            ]\n        },\n        {\n            \"code\": \"KØN\",\n            \"values\": [\n                \"1\",\n                \"2\"\n            ]\n        },\n        {\n            \"code\": \"ALDER\",\n            \"values\": [\n                \"20\",\n                \"21\",\n                \"22\",\n                \"23\",\n                \"24\",\n                \"25\",\n                \"26\",\n                \"27\",\n                \"28\",\n                \"29\",\n                \"30\",\n                \"31\",\n                \"32\",\n                \"33\",\n                \"34\",\n                \"35\",\n                \"36\",\n                \"37\",\n                \"38\",\n                \"39\",\n                \"40\",\n                \"41\",\n                \"42\",\n                \"43\",\n                \"44\",\n                \"45\",\n                \"46\",\n                \"47\",\n                \"48\",\n                \"49\",\n                \"50\",\n                \"51\",\n                \"52\",\n                \"53\",\n                \"54\",\n                \"55\",\n                \"56\",\n                \"57\",\n                \"58\",\n                \"59\",\n                \"60\",\n                \"61\",\n                \"62\",\n                \"63\",\n                \"64\",\n                \"65\",\n                \"66\",\n                \"67\",\n                \"68\",\n                \"69\",\n                \"70\",\n                \"71\",\n                \"72\",\n                \"73\",\n                \"74\",\n                \"75\",\n                \"76\",\n                \"77\",\n                \"78\",\n                \"79\",\n                \"80\",\n                \"81\",\n                \"82\",\n                \"83\",\n                \"84\",\n                \"85\",\n                \"86\",\n                \"87\",\n                \"88\",\n                \"89\",\n                \"90\"\n            ]\n        },\n        {\n            \"code\": \"CIVILSTAND\",\n            \"values\": [\n                \"U\",\n                \"G\",\n                \"E\",\n                \"F\"\n            ]\n        },\n        {\n            \"code\": \"Tid\",\n            \"values\": [\n                `${kvartal}`\n            ]\n        }\n    ]\n};\nreturn {payload : regBody};",
         "outputs": 1,
         "noerr": 0,
@@ -267,8 +267,8 @@
         "type": "mysql",
         "z": "01b9b3c76ac3fd00",
         "mydb": "2236dfd1.c909e",
-        "name": "",
-        "x": 450,
+        "name": "Insert data",
+        "x": 470,
         "y": 460,
         "wires": [
             [
@@ -288,8 +288,76 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 680,
-        "y": 420,
+        "x": 660,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "3bc47683cc4d087e",
+        "type": "function",
+        "z": "01b9b3c76ac3fd00",
+        "name": "Truncate table",
+        "func": "var topic = \"TRUNCATE TABLE kage;\";\nmsg.topic = topic\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 140,
+        "wires": [
+            [
+                "4879b66c491e5a9d"
+            ]
+        ]
+    },
+    {
+        "id": "4879b66c491e5a9d",
+        "type": "mysql",
+        "z": "01b9b3c76ac3fd00",
+        "mydb": "2236dfd1.c909e",
+        "name": "delete table data",
+        "x": 530,
+        "y": 140,
+        "wires": [
+            [
+                "242b9e964e848119"
+            ]
+        ]
+    },
+    {
+        "id": "5d571b1931eb3ad4",
+        "type": "catch",
+        "z": "01b9b3c76ac3fd00",
+        "name": "Database",
+        "scope": [
+            "4879b66c491e5a9d",
+            "7580f4542a5000fc"
+        ],
+        "uncaught": false,
+        "x": 100,
+        "y": 700,
+        "wires": [
+            [
+                "09b826736e02fa93"
+            ]
+        ]
+    },
+    {
+        "id": "09b826736e02fa93",
+        "type": "debug",
+        "z": "01b9b3c76ac3fd00",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 700,
         "wires": []
     },
     {
