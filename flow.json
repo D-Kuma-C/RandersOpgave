@@ -1,1 +1,1076 @@
-[]
+[
+    {
+        "id": "01b9b3c76ac3fd00",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8f87d5eb15c2a163",
+        "type": "tab",
+        "label": "Idea",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "14a6853c88df1d6d",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2236dfd1.c909e",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "test",
+        "tz": "",
+        "charset": ""
+    },
+    {
+        "id": "6c5cf798431959f6",
+        "type": "inject",
+        "z": "01b9b3c76ac3fd00",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "*/30 6 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "242b9e964e848119"
+            ]
+        ]
+    },
+    {
+        "id": "242b9e964e848119",
+        "type": "function",
+        "z": "01b9b3c76ac3fd00",
+        "name": "GetDate",
+        "func": "var d = new Date();\nvar year = d.getFullYear();\nvar month = d.getMonth() + 1;\nvar day = d.getDate();\nif (month == 1 && day == 8) {\n    msg.kv = year + \"K1\";\n    return msg;\n} else if (month == 4 && day == 8) {\n    msg.kv = year + \"K2\";\n    return msg;\n} else if (month == 8 && day == 26) /*Husk at ændre denne tilbage til month 7 og day 8 */{\n    msg.kv = year + \"K3\";\n    return msg;\n} else if (month == 10 && day == 8) {\n    msg.kv = year + \"K4\";\n    return msg;\n} else {\n    msg.notToday = \"Not today\";\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 260,
+        "wires": [
+            [
+                "f4eb87e5d025d7c4"
+            ]
+        ]
+    },
+    {
+        "id": "f4eb87e5d025d7c4",
+        "type": "switch",
+        "z": "01b9b3c76ac3fd00",
+        "name": "",
+        "property": "notToday",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Not today",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": true,
+        "outputs": 2,
+        "x": 490,
+        "y": 260,
+        "wires": [
+            [
+                "25cefcab79d3a769"
+            ],
+            [
+                "475e39af2ab8d53a",
+                "372f5974f93c3fb7"
+            ]
+        ],
+        "outputLabels": [
+            "Not Today",
+            "Kvartal"
+        ]
+    },
+    {
+        "id": "25cefcab79d3a769",
+        "type": "debug",
+        "z": "01b9b3c76ac3fd00",
+        "name": "Ikke idag",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "notToday",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 480,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "475e39af2ab8d53a",
+        "type": "debug",
+        "z": "01b9b3c76ac3fd00",
+        "name": "Idag",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "kv",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "372f5974f93c3fb7",
+        "type": "function",
+        "z": "01b9b3c76ac3fd00",
+        "name": "ReguestBody",
+        "func": "var kvartal = msg.kv;\nvar regBody = {\n    \"table\": \"folk1a\",\n    \"format\": \"CSV\",\n    \"variables\": [\n        {\n            \"code\": \"OMRÅDE\",\n            \"values\": [\n                \"730\"\n            ]\n        },\n        {\n            \"code\": \"KØN\",\n            \"values\": [\n                \"1\",\n                \"2\"\n            ]\n        },\n        {\n            \"code\": \"ALDER\",\n            \"values\": [\n                \"20\",\n                \"21\",\n                \"22\",\n                \"23\",\n                \"24\",\n                \"25\",\n                \"26\",\n                \"27\",\n                \"28\",\n                \"29\",\n                \"30\",\n                \"31\",\n                \"32\",\n                \"33\",\n                \"34\",\n                \"35\",\n                \"36\",\n                \"37\",\n                \"38\",\n                \"39\",\n                \"40\",\n                \"41\",\n                \"42\",\n                \"43\",\n                \"44\",\n                \"45\",\n                \"46\",\n                \"47\",\n                \"48\",\n                \"49\",\n                \"50\",\n                \"51\",\n                \"52\",\n                \"53\",\n                \"54\",\n                \"55\",\n                \"56\",\n                \"57\",\n                \"58\",\n                \"59\",\n                \"60\",\n                \"61\",\n                \"62\",\n                \"63\",\n                \"64\",\n                \"65\",\n                \"66\",\n                \"67\",\n                \"68\",\n                \"69\",\n                \"70\",\n                \"71\",\n                \"72\",\n                \"73\",\n                \"74\",\n                \"75\",\n                \"76\",\n                \"77\",\n                \"78\",\n                \"79\",\n                \"80\",\n                \"81\",\n                \"82\",\n                \"83\",\n                \"84\",\n                \"85\",\n                \"86\",\n                \"87\",\n                \"88\",\n                \"89\",\n                \"90\"\n            ]\n        },\n        {\n            \"code\": \"CIVILSTAND\",\n            \"values\": [\n                \"U\",\n                \"G\",\n                \"E\",\n                \"F\"\n            ]\n        },\n        {\n            \"code\": \"Tid\",\n            \"values\": [\n                `${kvartal}`\n            ]\n        }\n    ]\n};\nreturn {payload : regBody};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 260,
+        "wires": [
+            [
+                "ad92b32df95e5c1f"
+            ]
+        ]
+    },
+    {
+        "id": "b21c63fa55eeed73",
+        "type": "debug",
+        "z": "01b9b3c76ac3fd00",
+        "name": "kvartalData",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b6523aba7880363d",
+        "type": "csv",
+        "z": "01b9b3c76ac3fd00",
+        "name": "",
+        "sep": ";",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 1130,
+        "y": 260,
+        "wires": [
+            [
+                "b21c63fa55eeed73",
+                "0563d9a44551f13c"
+            ]
+        ]
+    },
+    {
+        "id": "ad92b32df95e5c1f",
+        "type": "http request",
+        "z": "01b9b3c76ac3fd00",
+        "name": "StatiskBankAPI",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.statbank.dk/v1/data",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 960,
+        "y": 260,
+        "wires": [
+            [
+                "b6523aba7880363d"
+            ]
+        ]
+    },
+    {
+        "id": "0563d9a44551f13c",
+        "type": "function",
+        "z": "01b9b3c76ac3fd00",
+        "name": "INSERT",
+        "func": "var data = msg.payload;\nvar area = \"\";\nvar gender = \"\";\nvar age = \"\";\nvar civilstand = \"\";\nvar time = \"\";\nvar numberOfPeople = 0;\nvar topic = \"\";\nfor (let i = 0; i < data.length; i++) {\n    area = data[i][\"OMRÅDE\"];\n    gender = data[i][\"KØN\"];\n    age = data[i][\"ALDER\"].split(\" \")[0];\n    civilstand = data[i][\"CIVILSTAND\"];\n    time = data[i][\"TID\"];\n    numberOfPeople = data[i][\"INDHOLD\"];\n    topic += \"INSERT INTO `test`.`kage` (`område`, `køn`, `alder`, `civilstand`, `tid`, `indhold`) VALUES ('\";\n    topic += area + \"', '\" + gender + \"', '\" + age + \"', '\" + civilstand + \"', '\" + time + \"', '\" + numberOfPeople + \"');\";\n}\nmsg.topic = topic\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 460,
+        "wires": [
+            [
+                "1480a35f916b5735",
+                "7580f4542a5000fc"
+            ]
+        ]
+    },
+    {
+        "id": "1480a35f916b5735",
+        "type": "debug",
+        "z": "01b9b3c76ac3fd00",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "7580f4542a5000fc",
+        "type": "mysql",
+        "z": "01b9b3c76ac3fd00",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 450,
+        "y": 460,
+        "wires": [
+            [
+                "7772c83d9a6bb0bb"
+            ]
+        ]
+    },
+    {
+        "id": "7772c83d9a6bb0bb",
+        "type": "debug",
+        "z": "01b9b3c76ac3fd00",
+        "name": "debug 11",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a8d5512922669b48",
+        "type": "inject",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 210,
+        "y": 180,
+        "wires": [
+            [
+                "45f77dea5319d24d"
+            ]
+        ]
+    },
+    {
+        "id": "45f77dea5319d24d",
+        "type": "function",
+        "z": "8f87d5eb15c2a163",
+        "name": "function 5",
+        "func": "var d = new Date();\nvar year = d.getFullYear();\nvar month = d.getMonth() + 1;\nvar day = d.getDate();\nvar msg = new String(year +\".\" + month+ \".\" + day);\nreturn {payload : msg};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 180,
+        "wires": [
+            [
+                "96f08e9c24bc10ff"
+            ]
+        ]
+    },
+    {
+        "id": "9744f4b219e82941",
+        "type": "debug",
+        "z": "8f87d5eb15c2a163",
+        "name": "K4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "96f08e9c24bc10ff",
+        "type": "switch",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "2023.4.7",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2023.7.7",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2023.8.24",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2023.1.7",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": true,
+        "outputs": 4,
+        "x": 490,
+        "y": 180,
+        "wires": [
+            [
+                "4b61b71242facfa7"
+            ],
+            [
+                "78a6ce5ff013e262"
+            ],
+            [
+                "9aa961398da0bed2",
+                "f18de3425a485a0f"
+            ],
+            [
+                "9744f4b219e82941",
+                "975e9d0339634e57"
+            ]
+        ],
+        "outputLabels": [
+            "K1",
+            "K2",
+            "K3",
+            "K4"
+        ]
+    },
+    {
+        "id": "9aa961398da0bed2",
+        "type": "debug",
+        "z": "8f87d5eb15c2a163",
+        "name": "K3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "4b61b71242facfa7",
+        "type": "http request",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "persist": false,
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 670,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "78a6ce5ff013e262",
+        "type": "http request",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "persist": false,
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 670,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f18de3425a485a0f",
+        "type": "http request",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "persist": false,
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 670,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "975e9d0339634e57",
+        "type": "http request",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "persist": false,
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 670,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "028ec9c184c90962",
+        "type": "inject",
+        "z": "8f87d5eb15c2a163",
+        "name": "CREATE",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 140,
+        "y": 640,
+        "wires": [
+            [
+                "b0b3248b26dbcfb4"
+            ]
+        ]
+    },
+    {
+        "id": "a007c0055f23fb01",
+        "type": "debug",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 670,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "b0b3248b26dbcfb4",
+        "type": "function",
+        "z": "8f87d5eb15c2a163",
+        "name": "TABLE",
+        "func": "//topic = \"CREATE TABLE `access` ( \";\n//topic = topic + \"`no` INT NULL AUTO_INCREMENT,\";\n//topic = topic + \"`date` TIMESTAMP NOT NULL,\";\n//topic = topic + \"`room` INT NULL,\";\n//topic = topic + \"`id` INT NULL,\";\n//topic = topic + \"INDEX `no` (`no`)) COLLATE='utf8mb3_danish_ci';\";\nvar topic = \"CREATE TABLE `Kage` (`no` INT NOT NULL AUTO_INCREMENT,`Name` VARCHAR(50) NOT NULL,`Age` INT NOT NULL,INDEX`no`(`no`))COLLATE = 'utf8mb3_danish_ci';\";\nmsg.topic = topic;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 640,
+        "wires": [
+            [
+                "b7a35c12e04f3826"
+            ]
+        ]
+    },
+    {
+        "id": "b7a35c12e04f3826",
+        "type": "mysql",
+        "z": "8f87d5eb15c2a163",
+        "d": true,
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 490,
+        "y": 640,
+        "wires": [
+            [
+                "a007c0055f23fb01"
+            ]
+        ]
+    },
+    {
+        "id": "a98e5b208327d235",
+        "type": "inject",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 720,
+        "wires": [
+            [
+                "8575ba8139aaf19f"
+            ]
+        ]
+    },
+    {
+        "id": "b8dd7edc57b924f1",
+        "type": "http request",
+        "z": "8f87d5eb15c2a163",
+        "name": "Aalborg weather",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.statbank.dk/v1/data",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 500,
+        "y": 720,
+        "wires": [
+            [
+                "25df221dae8424ef"
+            ]
+        ]
+    },
+    {
+        "id": "e498ad2be78bf32f",
+        "type": "debug",
+        "z": "8f87d5eb15c2a163",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "8575ba8139aaf19f",
+        "type": "function",
+        "z": "8f87d5eb15c2a163",
+        "name": "function 7",
+        "func": "var year = \"2023K2\";\nvar reg = {\n    \"table\": \"folk1a\",\n    \"format\": \"CSV\",\n    \"variables\": [\n        {\n            \"code\": \"OMRÅDE\",\n            \"values\": [\n                \"730\"\n            ]\n        },\n        {\n            \"code\": \"KØN\",\n            \"values\": [\n                \"1\",\n                \"2\"\n            ]\n        },\n        {\n            \"code\": \"ALDER\",\n            \"values\": [\n                \"20\",\n                \"90\",\n                \"21\",\n                \"22\",\n                \"23\",\n                \"24\",\n                \"25\",\n                \"26\",\n                \"27\",\n                \"28\",\n                \"29\",\n                \"30\",\n                \"31\",\n                \"32\",\n                \"33\",\n                \"34\",\n                \"35\",\n                \"36\",\n                \"37\",\n                \"38\",\n                \"39\",\n                \"40\",\n                \"41\",\n                \"42\",\n                \"43\",\n                \"44\",\n                \"45\",\n                \"46\",\n                \"47\",\n                \"48\",\n                \"49\",\n                \"50\",\n                \"51\",\n                \"52\",\n                \"53\",\n                \"54\",\n                \"55\",\n                \"56\",\n                \"57\",\n                \"58\",\n                \"59\",\n                \"60\",\n                \"61\",\n                \"62\",\n                \"63\",\n                \"64\",\n                \"65\",\n                \"66\",\n                \"67\",\n                \"68\",\n                \"69\",\n                \"70\",\n                \"71\",\n                \"72\",\n                \"73\",\n                \"74\",\n                \"75\",\n                \"76\",\n                \"77\",\n                \"78\",\n                \"79\",\n                \"80\",\n                \"81\",\n                \"82\",\n                \"83\",\n                \"84\",\n                \"85\",\n                \"86\",\n                \"87\",\n                \"88\",\n                \"89\"\n            ]\n        },\n        {\n            \"code\": \"CIVILSTAND\",\n            \"values\": [\n                \"U\",\n                \"G\",\n                \"E\",\n                \"F\"\n            ]\n        },\n        {\n            \"code\": \"Tid\",\n            \"values\": [\n                `${year}`\n            ]\n        }\n    ]\n};\nreturn {payload : reg};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 720,
+        "wires": [
+            [
+                "b8dd7edc57b924f1"
+            ]
+        ]
+    },
+    {
+        "id": "25df221dae8424ef",
+        "type": "csv",
+        "z": "8f87d5eb15c2a163",
+        "name": "",
+        "sep": ";",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 650,
+        "y": 720,
+        "wires": [
+            [
+                "e498ad2be78bf32f"
+            ]
+        ]
+    },
+    {
+        "id": "375fb02ef3abee8a",
+        "type": "inject",
+        "z": "14a6853c88df1d6d",
+        "name": "CREATE",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 280,
+        "wires": [
+            [
+                "b4a140cb0211a612"
+            ]
+        ]
+    },
+    {
+        "id": "540e472d043c14de",
+        "type": "debug",
+        "z": "14a6853c88df1d6d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 890,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "11ee0ee997419396",
+        "type": "inject",
+        "z": "14a6853c88df1d6d",
+        "name": "INSERT",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 340,
+        "wires": [
+            [
+                "8fbeec269a77944b"
+            ]
+        ]
+    },
+    {
+        "id": "8fbeec269a77944b",
+        "type": "function",
+        "z": "14a6853c88df1d6d",
+        "name": "INSERT",
+        "func": "if (Math.random() < 0.5) { var room = 503;}else{ room = 602; }\nif (Math.random() < 0.5) { var id = 9909;}else{ id = 1893; }\n\nvar topic = \"INSERT INTO `test`.`access` (`room`, `id`) VALUES ('\";\ntopic = topic + room +\"', '\";\ntopic = topic + id + \"');\";\n\nmsg.topic = topic;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 340,
+        "wires": [
+            [
+                "863dbf0d77a84299"
+            ]
+        ]
+    },
+    {
+        "id": "7b810a45030c308e",
+        "type": "debug",
+        "z": "14a6853c88df1d6d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 890,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "3c184795eb316d86",
+        "type": "inject",
+        "z": "14a6853c88df1d6d",
+        "name": "DELETE ",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 400,
+        "wires": [
+            [
+                "4ea9212401b86a24"
+            ]
+        ]
+    },
+    {
+        "id": "9b84326daa88cbe0",
+        "type": "debug",
+        "z": "14a6853c88df1d6d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 890,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "5115e4b7aaf727b9",
+        "type": "inject",
+        "z": "14a6853c88df1d6d",
+        "name": "UPDATE",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 460,
+        "wires": [
+            [
+                "0378f103d3cda655"
+            ]
+        ]
+    },
+    {
+        "id": "e56ae79afe466d6d",
+        "type": "debug",
+        "z": "14a6853c88df1d6d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 890,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "3981efc4fe9a7db0",
+        "type": "inject",
+        "z": "14a6853c88df1d6d",
+        "name": "COUNT",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 350,
+        "y": 520,
+        "wires": [
+            [
+                "bf935d66ec92626e"
+            ]
+        ]
+    },
+    {
+        "id": "faf9ce3655fa1e56",
+        "type": "comment",
+        "z": "14a6853c88df1d6d",
+        "name": "MariaDB",
+        "info": "https://mariadb.org/\n\n//SELECT COUNT(*) FROM RANDOMNUM\n//SELECT COUNT(*) FROM `test`\n// UPDATE RANDOMNUM SET BOOL = 1 WHERE VALUE > 20 AND BOOL = 0\n\n//UPDATE `test`.`access` SET `room`='602' LIMIT 1;\n\n//DELETE FROM RANDOMNUM WHERE TIMESTAMP <= strftime('%s','now', '-30 seconds')*1000\n\n//DELETE FROM `test`.`access` WHERE  `no`=3 AND `time`='2021-06-07 17:37:03' AND `room`=503 AND `id`=1893 LIMIT 1;\n",
+        "x": 340,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "b4a140cb0211a612",
+        "type": "function",
+        "z": "14a6853c88df1d6d",
+        "name": "TABLE",
+        "func": "topic = \"CREATE TABLE `access` ( \";\ntopic = topic + \"`no` INT NULL AUTO_INCREMENT,\";\ntopic = topic + \"`date` TIMESTAMP NOT NULL,\";\ntopic = topic + \"`room` INT NULL,\";\ntopic = topic + \"`id` INT NULL,\";\ntopic = topic + \"INDEX `no` (`no`)) COLLATE='latin1_swedish_ci';\";\nmsg.topic = topic;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 530,
+        "y": 280,
+        "wires": [
+            [
+                "016ff94b9cdb37b8"
+            ]
+        ]
+    },
+    {
+        "id": "305a87655d93b1ea",
+        "type": "inject",
+        "z": "14a6853c88df1d6d",
+        "name": "CREATE",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 220,
+        "wires": [
+            [
+                "1ea5a1260830ac8c"
+            ]
+        ]
+    },
+    {
+        "id": "c779952c7b5c1c5e",
+        "type": "debug",
+        "z": "14a6853c88df1d6d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 890,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "1ea5a1260830ac8c",
+        "type": "function",
+        "z": "14a6853c88df1d6d",
+        "name": "DATABASE",
+        "func": "var newMsg = {\n\"topic\" : \"CREATE DATABASE `test`;\"\n}\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 550,
+        "y": 220,
+        "wires": [
+            [
+                "ceb81c17da6a8448"
+            ]
+        ]
+    },
+    {
+        "id": "4ea9212401b86a24",
+        "type": "function",
+        "z": "14a6853c88df1d6d",
+        "name": "DELETE ",
+        "func": "var newMsg = {\n\"topic\" : \"DELETE FROM `test`.`access` ORDER BY no DESC LIMIT 1\"\n}\nreturn newMsg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 400,
+        "wires": [
+            [
+                "0fba9d9992ee9fb8"
+            ]
+        ]
+    },
+    {
+        "id": "0378f103d3cda655",
+        "type": "function",
+        "z": "14a6853c88df1d6d",
+        "name": "UPDATE",
+        "func": "var newMsg = {\n\"topic\" : \"UPDATE `test`.`access` SET `room`='602' ORDER BY date DESC LIMIT 1;\"\n}\nreturn newMsg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 540,
+        "y": 460,
+        "wires": [
+            [
+                "0cacb792a2777771"
+            ]
+        ]
+    },
+    {
+        "id": "bf935d66ec92626e",
+        "type": "function",
+        "z": "14a6853c88df1d6d",
+        "name": "COUNT",
+        "func": "var newMsg = {\n\"topic\" : \"SELECT COUNT(*) FROM `test`.`access`;\"\n}\nreturn newMsg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 520,
+        "wires": [
+            [
+                "919d98469032a0f3"
+            ]
+        ]
+    },
+    {
+        "id": "12d355699903ec25",
+        "type": "debug",
+        "z": "14a6853c88df1d6d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload[0]",
+        "targetType": "msg",
+        "x": 900,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "863dbf0d77a84299",
+        "type": "mysql",
+        "z": "14a6853c88df1d6d",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 710,
+        "y": 340,
+        "wires": [
+            [
+                "7b810a45030c308e"
+            ]
+        ]
+    },
+    {
+        "id": "016ff94b9cdb37b8",
+        "type": "mysql",
+        "z": "14a6853c88df1d6d",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 710,
+        "y": 280,
+        "wires": [
+            [
+                "540e472d043c14de"
+            ]
+        ]
+    },
+    {
+        "id": "ceb81c17da6a8448",
+        "type": "mysql",
+        "z": "14a6853c88df1d6d",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 710,
+        "y": 220,
+        "wires": [
+            [
+                "c779952c7b5c1c5e"
+            ]
+        ]
+    },
+    {
+        "id": "0fba9d9992ee9fb8",
+        "type": "mysql",
+        "z": "14a6853c88df1d6d",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 710,
+        "y": 400,
+        "wires": [
+            [
+                "9b84326daa88cbe0"
+            ]
+        ]
+    },
+    {
+        "id": "0cacb792a2777771",
+        "type": "mysql",
+        "z": "14a6853c88df1d6d",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 710,
+        "y": 460,
+        "wires": [
+            [
+                "e56ae79afe466d6d"
+            ]
+        ]
+    },
+    {
+        "id": "919d98469032a0f3",
+        "type": "mysql",
+        "z": "14a6853c88df1d6d",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 710,
+        "y": 520,
+        "wires": [
+            [
+                "12d355699903ec25"
+            ]
+        ]
+    }
+]
