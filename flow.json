@@ -45,6 +45,44 @@
         "color": "#DDAA99"
     },
     {
+        "id": "7df736896172d94f",
+        "type": "subflow",
+        "name": "Create Tables",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 80,
+                "y": 180,
+                "wires": [
+                    {
+                        "id": "454f37768e855b01"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1280,
+                "y": 180,
+                "wires": [
+                    {
+                        "id": "d70acee4367a5eaa",
+                        "port": 0
+                    },
+                    {
+                        "id": "46d2e2ccf9aea90a",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#3FADB5",
+        "icon": "node-red/db.svg"
+    },
+    {
         "id": "742da52832652643",
         "type": "group",
         "z": "01b9b3c76ac3fd00",
@@ -233,6 +271,162 @@
                 "69d721798801ea88"
             ]
         ]
+    },
+    {
+        "id": "454f37768e855b01",
+        "type": "change",
+        "z": "7df736896172d94f",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "SHOW TABLES;",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 210,
+        "y": 180,
+        "wires": [
+            [
+                "b772390d53f70809"
+            ]
+        ]
+    },
+    {
+        "id": "b772390d53f70809",
+        "type": "mysql",
+        "z": "7df736896172d94f",
+        "mydb": "2236dfd1.c909e",
+        "name": "Show tables",
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "eb608bf5519e413e"
+            ]
+        ]
+    },
+    {
+        "id": "eb608bf5519e413e",
+        "type": "function",
+        "z": "7df736896172d94f",
+        "name": "GetTables",
+        "func": "var data = msg.payload;\nconst tables = [];\nfor (let i = 0; i < data.length; i++) {\n    tables[i] = data[i].Tables_in_test;\n}\n\nreturn {payload : tables};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 180,
+        "wires": [
+            [
+                "d70acee4367a5eaa"
+            ]
+        ]
+    },
+    {
+        "id": "d70acee4367a5eaa",
+        "type": "switch",
+        "z": "7df736896172d94f",
+        "name": "Does specific table exist?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": "2023k3",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 770,
+        "y": 180,
+        "wires": [
+            [],
+            [
+                "1df22e86b6f2a6c0"
+            ]
+        ]
+    },
+    {
+        "id": "1df22e86b6f2a6c0",
+        "type": "function",
+        "z": "7df736896172d94f",
+        "name": "CreateTables",
+        "func": "var creatTables = \"CREATE TABLE `2023k3` ( \";\ncreatTables += \"`No` INT NOT NULL AUTO_INCREMENT,\";\ncreatTables += \"`område` VARCHAR(50) NOT NULL DEFAULT '0',\";\ncreatTables += \"`køn` VARCHAR(8) NOT NULL DEFAULT '0',\";\ncreatTables += \"`alder` INT NOT NULL DEFAULT 0,\";\ncreatTables += \"`civilstand` VARCHAR(20) NOT NULL DEFAULT '0',\";\ncreatTables += \"`tid` VARCHAR(8) NOT NULL DEFAULT '0',\";\ncreatTables += \"`indhold` INT NOT NULL DEFAULT 0,\";\ncreatTables += \"INDEX `No` (`No`)) COLLATE='utf8mb3_danish_ci';\";\nmsg.topic = creatTables;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 260,
+        "wires": [
+            [
+                "46d2e2ccf9aea90a"
+            ]
+        ]
+    },
+    {
+        "id": "46d2e2ccf9aea90a",
+        "type": "mysql",
+        "z": "7df736896172d94f",
+        "mydb": "2236dfd1.c909e",
+        "name": "",
+        "x": 1170,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b007eb0928fbaba8",
+        "type": "catch",
+        "z": "7df736896172d94f",
+        "name": "",
+        "scope": [
+            "b772390d53f70809",
+            "46d2e2ccf9aea90a"
+        ],
+        "uncaught": false,
+        "x": 210,
+        "y": 400,
+        "wires": [
+            [
+                "8aa94c13746c3601"
+            ]
+        ]
+    },
+    {
+        "id": "8aa94c13746c3601",
+        "type": "debug",
+        "z": "7df736896172d94f",
+        "name": "Create tables Err",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 400,
+        "wires": []
     },
     {
         "id": "242b9e964e848119",
@@ -502,7 +696,7 @@
         "y": 140,
         "wires": [
             [
-                "3bc47683cc4d087e"
+                "bb41fd048525fed8"
             ]
         ]
     },
@@ -517,7 +711,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 260,
+        "x": 480,
         "y": 140,
         "wires": [
             [
@@ -531,7 +725,7 @@
         "z": "01b9b3c76ac3fd00",
         "mydb": "2236dfd1.c909e",
         "name": "delete table data",
-        "x": 530,
+        "x": 710,
         "y": 140,
         "wires": [
             [
@@ -548,5 +742,18 @@
         "x": 550,
         "y": 100,
         "wires": []
+    },
+    {
+        "id": "bb41fd048525fed8",
+        "type": "subflow:7df736896172d94f",
+        "z": "01b9b3c76ac3fd00",
+        "name": "",
+        "x": 270,
+        "y": 140,
+        "wires": [
+            [
+                "3bc47683cc4d087e"
+            ]
+        ]
     }
 ]
